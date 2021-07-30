@@ -2,6 +2,7 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 /**
  * Base
@@ -28,7 +29,33 @@ const floor = new THREE.Mesh(
 )
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// scene.add(floor)
+
+/**
+ * Models
+ */
+ const gltfLoader = new GLTFLoader()
+
+ gltfLoader.load(
+    '/models/building_02_220919_2.gltf',
+    (gltf) =>
+    {
+        console.log('success')
+        scene.add(gltf.scene)
+        console.log(gltf)
+    },
+    (progress) =>
+    {
+        console.log('progress')
+        console.log(progress)
+    },
+    (error) =>
+    {
+        console.log('error')
+        console.log(error)
+    }
+)
+
 
 /**
  * Lights
@@ -74,7 +101,8 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+// const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0.01, 100)
 camera.position.set(2, 2, 2)
 scene.add(camera)
 
