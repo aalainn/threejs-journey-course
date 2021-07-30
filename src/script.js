@@ -78,8 +78,10 @@ scene.add(directionalLight)
  * Sizes
  */
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
+    // width: window.innerWidth,
+    // height: window.innerHeight
+    width: 800,
+    height: 600
 }
 
 window.addEventListener('resize', () =>
@@ -102,14 +104,22 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 // const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-const camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0.01, 100)
-camera.position.set(2, 2, 2)
+const camera = new THREE.OrthographicCamera(- 7, 7, 7, -7, 0.01, 1000)
+camera.position.set(80, 110, -55)
 scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-controls.target.set(0, 0.75, 0)
+controls.target.set(0, 0, 0)
 controls.enableDamping = true
+
+// Custom Controls
+let increaseValue = 0;
+document.getElementById('control-1').addEventListener('click', function() {
+    increaseValue +=10; 
+    console.log(camera.position) 
+    camera.position.set(160+increaseValue, 110, -55)
+}, false);
 
 /**
  * Renderer
@@ -136,6 +146,7 @@ const tick = () =>
 
     // Update controls
     controls.update()
+    // console.log(camera.position)
 
     // Render
     renderer.render(scene, camera)
