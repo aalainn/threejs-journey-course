@@ -6,17 +6,18 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 
 
-
-/**
- * Base
- */
-
-
 // Debug
 const gui = new dat.GUI()
 const debugParameter = {
-    color: 0xff0000
+    color: 0xff0000,
+    spin: () => {
+        console.log('spinging it... :-)')
+        console.log('get by name', scene.getObjectByName('ImportedScene'))
+        let spinObject = scene.getObjectByName('ImportedScene')
+        gsap.to(spinObject.rotation, { duration: 4, y: spinObject.rotation.y + Math.PI * 2 }) // PLus is needed because then you can spin it again and again, else you can only once
+    }
 }
+gui.add(debugParameter,'spin')
 
 // console.log('dat.gui', gui)
 
@@ -40,13 +41,14 @@ const floor = new THREE.Mesh(
 )
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-scene.add(floor)
+// scene.add(floor)
 
 /**
  * Models
  */
+
+// Import models
  const gltfLoader = new GLTFLoader()
- let importedModell;
 
  gltfLoader.load(
     '/models/building_02_220919_2.gltf',
@@ -56,6 +58,7 @@ scene.add(floor)
         gltf.scene.name = 'ImportedScene'
         scene.add(gltf.scene)
 
+        // Debug 
         gui.add(gltf.scene.position, 'x')
             .min(-3)
             .max(3)
@@ -78,9 +81,7 @@ scene.add(floor)
             gltf.scene.children[2].material.color.set(debugParameter.color)
 
         })
-        console.log('Scene object importedScene: ', gltf.scene)
-
-
+        // console.log('Scene object importedScene: ', gltf.scene)
     },
     (progress) =>
     {
@@ -94,7 +95,6 @@ scene.add(floor)
     }
 )
 
-console.log('Var importedModel', importedModell)
 
 /**
  * Lights
