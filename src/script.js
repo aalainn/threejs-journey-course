@@ -3,13 +3,20 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import gsap from 'gsap'
+
 
 
 /**
  * Base
  */
+
+
 // Debug
 const gui = new dat.GUI()
+const debugParameter = {
+    color: 0xff0000
+}
 
 // console.log('dat.gui', gui)
 
@@ -33,25 +40,47 @@ const floor = new THREE.Mesh(
 )
 floor.receiveShadow = true
 floor.rotation.x = - Math.PI * 0.5
-// scene.add(floor)
+scene.add(floor)
 
 /**
  * Models
  */
  const gltfLoader = new GLTFLoader()
+ let importedModell;
 
  gltfLoader.load(
     '/models/building_02_220919_2.gltf',
     (gltf) =>
     {
         console.log('success')
+        gltf.scene.name = 'ImportedScene'
         scene.add(gltf.scene)
-        gui.add(gltf.scene.position, 'x').min(-3).max(3).step(0.01)
-        gui.add(gltf.scene.position, 'y').min(-3).max(3).step(0.01)
-        gui.add(gltf.scene.position, 'z').min(-3).max(3).step(0.01)
+
+        gui.add(gltf.scene.position, 'x')
+            .min(-3)
+            .max(3)
+            .step(0.01)
+            .name('x-Richtung')
+        gui.add(gltf.scene.position, 'y')
+            .min(-3)
+            .max(3)
+            .step(0.01)
+            .name('y-Richtung')
+        gui.add(gltf.scene.position, 'z')
+            .min(-3)
+            .max(3)
+            .step(0.01)
+            .name('z-Richtung')
+        gui.add(gltf.scene, 'visible')
+        gui.add(gltf.scene.children[2].material , 'wireframe')
+        gui.addColor(debugParameter, 'color').onChange(()=>{
+            // console.log('Changed')
+            gltf.scene.children[2].material.color.set(debugParameter.color)
+
+        })
+        console.log('Scene object importedScene: ', gltf.scene)
 
 
-        console.log(gltf)
     },
     (progress) =>
     {
@@ -65,6 +94,7 @@ floor.rotation.x = - Math.PI * 0.5
     }
 )
 
+console.log('Var importedModel', importedModell)
 
 /**
  * Lights
@@ -126,12 +156,9 @@ controls.enableDamping = true
 let increaseValue = 0;
 document.getElementById('control-1').addEventListener('click', function() {
     increaseValue +=10; 
-    console.log(camera.position) 
+    // console.log(camera.position) 
     camera.position.set(160+increaseValue, 110, -55)
 }, false);
-
-// Debug
-// gui.add()
 
 
 /**
