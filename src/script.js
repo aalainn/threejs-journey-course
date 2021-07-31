@@ -4,11 +4,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
+
 /**
  * Base
  */
 // Debug
 const gui = new dat.GUI()
+
+// console.log('dat.gui', gui)
+
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -42,6 +46,11 @@ floor.rotation.x = - Math.PI * 0.5
     {
         console.log('success')
         scene.add(gltf.scene)
+        gui.add(gltf.scene.position, 'x').min(-3).max(3).step(0.01)
+        gui.add(gltf.scene.position, 'y').min(-3).max(3).step(0.01)
+        gui.add(gltf.scene.position, 'z').min(-3).max(3).step(0.01)
+
+
         console.log(gltf)
     },
     (progress) =>
@@ -120,6 +129,10 @@ document.getElementById('control-1').addEventListener('click', function() {
     console.log(camera.position) 
     camera.position.set(160+increaseValue, 110, -55)
 }, false);
+
+// Debug
+// gui.add()
+
 
 /**
  * Renderer
