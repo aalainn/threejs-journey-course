@@ -47,6 +47,13 @@ floor.rotation.x = - Math.PI * 0.5
  * Models
  */
 
+// Create models
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const edges = new THREE.EdgesGeometry( geometry );
+const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
+line.position.set(0,2,-2)
+scene.add( line );
+
 // Import models
  const gltfLoader = new GLTFLoader()
 
@@ -59,24 +66,30 @@ floor.rotation.x = - Math.PI * 0.5
         scene.add(gltf.scene)
 
         // Debug 
-        gui.add(gltf.scene.position, 'x')
+        gui
+            .add(gltf.scene.position, 'x')
             .min(-3)
             .max(3)
             .step(0.01)
             .name('x-Richtung')
-        gui.add(gltf.scene.position, 'y')
+        gui
+            .add(gltf.scene.position, 'y')
             .min(-3)
             .max(3)
             .step(0.01)
             .name('y-Richtung')
-        gui.add(gltf.scene.position, 'z')
+        gui
+            .add(gltf.scene.position, 'z')
             .min(-3)
             .max(3)
             .step(0.01)
             .name('z-Richtung')
-        gui.add(gltf.scene, 'visible')
-        gui.add(gltf.scene.children[2].material , 'wireframe')
-        gui.addColor(debugParameter, 'color').onChange(()=>{
+        gui
+            .add(gltf.scene, 'visible')
+        gui
+            .add(gltf.scene.children[2].material , 'wireframe')
+        gui
+            .addColor(debugParameter, 'color').onChange(()=>{
             // console.log('Changed')
             gltf.scene.children[2].material.color.set(debugParameter.color)
 
@@ -165,7 +178,8 @@ document.getElementById('control-1').addEventListener('click', function() {
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
+    antialiasing: true
 })
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
@@ -178,7 +192,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const clock = new THREE.Clock()
 let previousTime = 0
 
-const tick = () =>
+const renderLoop = () =>
 {
     const elapsedTime = clock.getElapsedTime()
     const deltaTime = elapsedTime - previousTime
@@ -191,8 +205,8 @@ const tick = () =>
     // Render
     renderer.render(scene, camera)
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+    // Call renderLoop again on the next frame
+    window.requestAnimationFrame(renderLoop)
 }
 
-tick()
+renderLoop()
