@@ -51,7 +51,7 @@ floor.rotation.x = - Math.PI * 0.5
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const edges = new THREE.EdgesGeometry( geometry );
 const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
-line.position.set(0,2,-2)
+line.position.set(0,2,-3)
 scene.add( line );
 
 // Import models
