@@ -52,7 +52,7 @@ const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const edges = new THREE.EdgesGeometry( geometry , 15);
 const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { 
     color: 0xff0000,
-    linewidth: 100
+    linewidth: 1
  } ) );
 line.position.set(0,2,-3)
 console.log(edges)
